@@ -1,13 +1,41 @@
-import { clerkMiddleware , createRouteMatcher } from "@clerk/nextjs/server";
+import { authMiddleware, clerkMiddleware , createRouteMatcher, redirectToSignIn } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)']);
 
-// test
-export default clerkMiddleware((auth, request) => {
-  if(!isPublicRoute(request)) {
-    auth().protect();
+
+// export default clerkMiddleware((auth, request) => {
+//   if(!isPublicRoute(request)) {
+//     auth().protect();
+//   }
+// });
+
+export default authMiddleware({
+  publicRoutes: ["/", "/contact"],
+  afterAuth(auth, req){
+    if (auth.userId && auth.isPublicRoute){
+      let path = "/select-org"
+
+      if (auth.orgId){
+        path = `/organization/${auth.orgId}`
+      }
+
+      const orgSelection = new URL (path, req.url);
+      return NextResponse.redirect(orgSelection)
+    }
+
+    if(!auth.userId && !auth.isPublicRoute){
+      return redirectToSignIn ({ returnBackUrl: req.url})
+    }
+
+    if(auth.userId && !auth .orgId && req.nextUrl.pathname !== "/select-org"){
+      const orgSelection = new URL("/select-org", req.url);
+      return NextResponse.redirect(orgSelection)
+    }
   }
 });
+
+
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params
