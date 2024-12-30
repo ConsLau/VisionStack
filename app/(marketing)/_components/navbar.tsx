@@ -15,7 +15,8 @@ export const Navbar = () => {
                     </Button>
                     <Button size="sm" asChild>
                         <Link href="/sign-up">
-                            Get VisionStack for free
+                            {/* Get VisionStack for free */}
+                            Sign up
                         </Link>
                     </Button>
                 </div>

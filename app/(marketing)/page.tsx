@@ -48,7 +48,8 @@ const MarketingPage = () => {
             </div>
             <Button className="mt-6" size="lg" asChild>
                 <Link href="/sign-up">
-                    Get VisionStack for free
+                    {/* Get VisionStack for free */}
+                    Sign up
                 </Link>
             </Button>
         </div>
