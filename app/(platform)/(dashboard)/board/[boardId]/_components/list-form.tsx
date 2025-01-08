@@ -48,7 +48,7 @@ export const ListForm = () => {
         }
     };
 
-    useEventListener("keydown", onKeyDown)
+    // useEventListener("keydown", onKeyDown)
     useOnClickOutside(formRef, disableEditing)
 
     const onSubmit = (formData: FormData) => {
